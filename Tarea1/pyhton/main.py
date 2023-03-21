@@ -1,10 +1,13 @@
 import threading
 import logging
 import random
+import numpy as np
 from classes import *
 
-def simulator(N, lam, u_1, u_2, H=600):
+def simulator(N, lam, u_1, u_2, prime_seed, H=600):
     print("Simulating ...")
+
+    random.seed(prime_seed)
 
     results = []
 
@@ -50,7 +53,7 @@ def simulate(lam, u_1, u_2, H, seed):
                 t2 = t + random.expovariate(caja_2.u)
             else:
                 Queue.append(client)
-            t_next = t + random.expovariate(lam)
+            t_next = t + np.random.poisson(lam)
         elif t1 <= t_next and t1 <= t2:
             t = t1
             caja_1.bussy = False
@@ -89,6 +92,7 @@ def get_results(results):
 
 if __name__ == "__main__":
 
+    seed = int(input("Ingrese semilla primaria: "))
     lam = int(input("Ingrese lambda: "))
     u_1 = int(input("Ingrese u1: "))
     u_2 = int(input("Ingrese u2: "))
@@ -98,7 +102,7 @@ if __name__ == "__main__":
     random.seed(sim_seed)
 
     is_interrupt_task = True
-    testLoop = threading.Thread(target=simulator, args=(N, lam, u_1, u_2), daemon=is_interrupt_task)
+    testLoop = threading.Thread(target=simulator, args=(N, lam, u_1, u_2, seed), daemon=is_interrupt_task)
     testLoop.start()
 
     logging.info('starting main loop ...')
