@@ -8,4 +8,4 @@ class Checkout:
 class Client:
     def __init__(self, arrival_time):
         self.arrival_time = arrival_time
-        self.service_time = 0
+        self.queue_time = 0
