@@ -1,38 +1,33 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def generar_laplace(mu, b, n):
-    """
-    Genera n instancias independientes de una variable aleatoria Laplace
-    con media mu y parámetro de escala b.
-
-    Args:
-        mu (float): Media de la distribución Laplace.
-        b (float): Parámetro de escala de la distribución Laplace.
-        n (int): Número de instancias a generar.
-
-    Returns:
-        numpy.ndarray: Array con n instancias de la variable aleatoria Laplace.
-    """
-    u1 = np.random.uniform(size=n)
-    u2 = np.random.uniform(size=n)
-    signo = np.where(u1 >= 0.5, 1, -1)
-    x = mu - b * signo * np.log(1 - u2)
+def generar_variable_laplace(mu, b, n):
+    # Generar variables aleatorias de una distribución exponencial
+    y = np.random.exponential(scale=b, size=n)
+    
+    # Generar variables aleatorias uniformes en el rango [0, 1]
+    u = np.random.rand(n)
+    
+    # Aplicar la función de transformación para obtener las variables aleatorias de la distribución Laplace
+    x = np.where(u < 0.5, mu + y, mu - y)
+    
     return x
 
 # Parámetros de la distribución Laplace
-mu = 0.0
-b = 1.0
+mu = 0 # Ubicación
+b = 1 # Escala
 
-# Número de instancias a generar
-n = 1000
+# Generar 100 instancias independientes de la variable aleatoria
+n = 100
+instancias = generar_variable_laplace(mu, b, n)
 
-# Generar instancias de la variable aleatoria Laplace
-instancias_laplace = generar_laplace(mu, b, n)
+print("Instancias generadas de la distribución Laplace:")
+print(instancias)
 
-# Generar histograma
-plt.hist(instancias_laplace, bins=20, density=True)
-plt.xlabel('Valor')
-plt.ylabel('Densidad de probabilidad')
+# Graficar las instancias generadas en un histograma
+plt.hist(instancias, bins=20, density=False, alpha=0.6, color='b')
+plt.xlabel('Valor de la variable aleatoria')
+plt.ylabel('Frecuencia relativa')
 plt.title('Histograma de la distribución Laplace')
+plt.grid(True)
 plt.show()
