@@ -47,6 +47,14 @@ class Simulacion:
         return random.expovariate(self.mu)
 
     def iniciar_simulacion(self):
+        # Liberamos las variables de la simulación
+        self.tiempo_actual = 0
+        self.camiones = []
+        self.naves = []
+        self.camiones_en_espera = []
+        self.camiones_en_reparacion = []
+        self.camiones_en_operacion = []
+        self.histograma_de_camiones_en_operacion = []
         # Creamos los camiones
         for i in range(self.numero_de_camiones):
             tiempo_llegada = self.generar_tiempo_llegada()
@@ -145,6 +153,11 @@ class Simulacion:
                     
         # Fin de la simulación
 
+    def simular_n_replicas(self, n):
+        for i in range(n):
+            random.seed(random.randint(0, 1000000))
+            self.iniciar_simulacion()
+
     def mostrar_resultados(self):
         # Ordenamos self.histograma_de_camiones_en_operacion por tiempo
         self.histograma_de_camiones_en_operacion.sort(key=lambda x: x[1])
@@ -179,6 +192,7 @@ class Simulacion:
         plt.ylabel("Número de camiones en operación")
         # dibujamos la linea de promedio
         plt.axhline(y=sum(promedio_por_mes_final.values()) / len(promedio_por_mes_final), color='r', linestyle='-')
+        plt.title("Número de camiones en operación vs Tiempo en la última réplica de la simulación")
         plt.show()
 
         

@@ -14,16 +14,18 @@ from clases import *
 
 def main():
     # Definimos los parámetros de la simulación
-    numero_de_camiones = 50
+    numero_de_camiones = 53
     numero_de_naves = 12
     lam = 1/2
     mu = 1/1
     # pedimos el tiempo máximo de simulación
     tiempo_maximo = int(input("Ingrese el tiempo máximo de simulación: "))
+    # pedimos el número de réplicas
+    numero_de_replicas = int(input("Ingrese el número de réplicas: "))
     # Creamos la simulación
     simulacion = Simulacion(numero_de_camiones, numero_de_naves, lam, mu, tiempo_maximo)
     # Iniciamos la simulación
-    simulacion.iniciar_simulacion()
+    simulacion.simular_n_replicas(numero_de_replicas)
     # Mostramos los resultados
     simulacion.mostrar_resultados()
     
